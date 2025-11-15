@@ -22,9 +22,14 @@ table, th, td {
 
 /* TODO: Add your primary and secondary styling below! */
 .primary-button {
-
+  border: white;
+  background-color: rgb(26, 218, 26);
+  border-radius: 6px;
+  padding: 4px;
 }
 
 .secondary-button {
-  
+  border: rgb(16, 213, 55);
+  padding: 2px 6px;
+  border-radius: 6px;
 }
