@@ -5,29 +5,44 @@
 //  https://cs571api.cs.wisc.edu/rest/s25/ice/pasta
 //  https://cs571api.cs.wisc.edu/rest/s25/ice/pizza
 
-const reviewNum = 0;
-const REVIEWS = [
-    "A burst of warmth and flavor in every spoonful; simple yet irresistible!",
-    "The perfect blend of spice and comfort, an easy go-to chili recipe.",
-    "Loved the hearty texture and rich taste - a new family favorite!",
-    "Quick, flavorful, and satisfying - this chili hits all the right notes!"
-];
+let recipe;
 
-// Gathers the original amounts of each ingredient.
-let ingrs = document.getElementById("ingredients-body").getElementsByTagName("tr");
-let originalAmounts = [];
-for (let ingr of ingrs) {
-    let amn = ingr.getElementsByTagName("td")[0].innerText;
-    let amnNum = parseFloat(amn);
-    originalAmounts.push(amnNum);
-}
+fetch("https://cs571.org/rest/s25/ice/pasta", {
+    headers: {
+        "X-CS571-ID": CS571.getBadgerId()
+    }
+})
+.then((d) => {
+    console.log(d.status)
+    return d.json()
+})
+.then((data) => {
 
-// TODO Implement the update yield!
+    recipe = data
+    console.log("I have received some data!");
+    console.log(data);
+
+    document.getElementById("recipe-name").innerText = data.name;
+    document.getElementById("recipe-author").innerText = data.author;
+    document.getElementById("recipe-img").src = data.img.location;
+    document.getElementById("recipe-img").alt = data.img.description;
+})
+
 function updateYield() {
-    alert("I should update the yield!");
+    if (recipe) {
+        // DOTO updata yield
+    } else {
+        alert("Sorry, no data yet.")
+    }
+    
 }
 
-// TODO Implement the display review!
 function displayReview() {
-    alert("I should display a review!");
+    if (recipe) {
+        // TODO Display review
+    } else {
+        alert("Sorry, no data yet.");
+    }
 }
+
+console.log(":)")
