@@ -1,8 +1,8 @@
 let studentNumbers;
 
-let searchName = document.getElementById("search-name").value.toLowerCase().trim();
-let searchMajor = document.getElementById("search-major").value.toLowerCase().trim();
-let searchInterest = document.getElementById("search-interest").value.toLowerCase().trim();
+let searchNameTag = document.getElementById("search-name");
+let searchMajorTag = document.getElementById("search-major");
+let searchInterestTag = document.getElementById("search-interest");
 
 fetch("https://cs571.org/rest/s25/hw2/students", {
 	headers : {
@@ -27,10 +27,9 @@ function studentInterestsList(interests) {
 		let li = document.createElement("li");
 		li.innerText = interest;
 		li.addEventListener("click", (e) => {
-			searchName.innerText = "";
-			searchMajor.innerText = "";
-			document.getElementById("search-interest").value = li.innerText;
-			searchInterest = li.innerText.toLowerCase();
+			searchNameTag.value = "";
+			searchMajorTag.value = "";
+			searchInterestTag.value = li.innerText;
 			handleSearch(e);
 		});
 		interestsUl.appendChild(li);
@@ -85,7 +84,11 @@ function handleSearch(e) {
 	e?.preventDefault(); // You can ignore this; prevents the default form submission!
 
 	// TODO Implement the search
+	let searchName = searchNameTag.value.toLowerCase().trim();
+	let searchMajor = searchMajorTag.value.toLowerCase().trim();
+	let searchInterest = searchInterestTag.value.toLowerCase().trim();
 
+	console.log(`search name is ${searchName}, search major is ${searchMajor}, search interest is ${searchInterest}`)
 	fetch("https://cs571.org/rest/s25/hw2/students", {
 	headers : {
 		"X-CS571-ID": "bid_dc56d365e836ff175237d8976f1c3b307e4fd6ae5fe4aa149a45d6f567466e04"
