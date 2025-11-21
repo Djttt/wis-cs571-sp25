@@ -2,6 +2,9 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import BadgerBuds from "../BadgerBuds";
 import BadgerBudsLanding from "./pages/BadgerBudsLanding"
+import BadgerBudsAdoptable from "./pages/BadgerBudsAdoptable";
+import BadgerBudsNoMatch from "./pages/BadgerBudsNoMatch"
+import BadgerBudsBasket from "./pages/BadgerBudsBasket"
 
 export default function BadgerBudsRouter() {
     return <BrowserRouter>
@@ -9,6 +12,9 @@ export default function BadgerBudsRouter() {
             <Route path="/" element={<BadgerBuds />}>
                 <Route index element={<BadgerBudsLanding />} />
                 {/* TODO: Add your routes here! */}
+                <Route path="available-cats" element={<BadgerBudsAdoptable />}></Route>
+                <Route path="basket" element={<BadgerBudsBasket />}/>
+                <Route path="*" element={<BadgerBudsNoMatch />}/>
             </Route>
         </Routes>
     </BrowserRouter>
