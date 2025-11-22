@@ -7,8 +7,9 @@ export default function LoginOrCreatePost(props) {
     // Otherwise, when the user refreshes the page, it will go away!
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-    const [userName, setUserName] = useState("");
-    const [password, setPassword] = useState("");
+    const usernameRef = useRef();
+    const passwordRef = useRef();
+    const commentRef = useRef();
 
     function handleLoginSubmit(e) {
         e?.preventDefault();  // prevents default form submit action
@@ -22,8 +23,8 @@ export default function LoginOrCreatePost(props) {
                 "Content-Type": "application/json"
             },                     
             body: JSON.stringify({
-                username: userName,
-                password: password
+                username: usernameRef.current.value,
+                password: passwordRef.current.value
             })
         })
         .then(res => {
@@ -40,10 +41,45 @@ export default function LoginOrCreatePost(props) {
         e?.preventDefault(); // prevents default form submit action
         
         // TODO: POST to https://cs571api.cs.wisc.edu/rest/s25/ice/comments
+        fetch("https://cs571.org/rest/s25/ice/comments", {
+            method: "POST",
+            credentials: "include",
+            headers: {
+                "X-CS571-ID": CS571.getBadgerId(),
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                comment: commentRef.current.value,
+            })
+        })
+        .then(res => {
+            if (res.status == 200) {
+                alert("Successed! add a new commit!");
+                props.refreshComments();
+            } else {
+                alert("Opps, something went wrong!");
+            }
+        });
+
     }
 
     function handleLogout() {
         // TODO POST to https://cs571api.cs.wisc.edu/rest/s25/ice/logout
+        fetch("https://cs571.org/rest/s25/ice/logout", {
+            method: "POST",
+            credentials: "include",
+            headers: {
+                "X-CS571-ID": CS571.getBadgerId(),
+            }
+        })
+        .then(res => {
+            if (res.status === 200) {
+                alert("You have been logged out!");
+                setIsLoggedIn(false);
+            } else {
+                 alert("Something went wrong! :/")
+            }
+        });
     }
 
     if (isLoggedIn) {
@@ -51,7 +87,7 @@ export default function LoginOrCreatePost(props) {
             <Button variant="danger" onClick={handleLogout}>Logout</Button>
             <Form onSubmit={handleCommentSubmit}>
                 <Form.Label htmlFor="commentInput">Your Comment</Form.Label>
-                <Form.Control id="commentInput"></Form.Control>
+                <Form.Control id="commentInput" ref={commentRef}></Form.Control>
                 <br/>
                 <Button type="submit" onClick={handleCommentSubmit}>Post Comment</Button>
             </Form>
@@ -59,9 +95,9 @@ export default function LoginOrCreatePost(props) {
     } else {
         return <Form onSubmit={handleLoginSubmit}>
             <Form.Label htmlFor="usernameInput">Username</Form.Label>
-            <Form.Control id="usernameInput" value={userName} onChange={e => setUserName(e.target.value)}></Form.Control>
+            <Form.Control id="usernameInput" ref={usernameRef}></Form.Control>
             <Form.Label htmlFor="passwordInput">Password</Form.Label>
-            <Form.Control id="passwordInput" type="password" value={password} onChange={e => setPassword(e.target.value)}></Form.Control>
+            <Form.Control id="passwordInput" type="password" ref={passwordRef}></Form.Control>
             <br/>
             <Button type="submit" onClick={handleLoginSubmit}>Login</Button>
         </Form>
