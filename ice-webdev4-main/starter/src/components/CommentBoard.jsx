@@ -12,7 +12,7 @@ export default function CommentBoard(props) {
     }, [])
 
     function refreshComments() {
-        fetch("https://cs571api.cs.wisc.edu/rest/s25/ice/comments", {
+        fetch("https://cs571.org/rest/s25/ice/comments", {
             headers: {
                 "X-CS571-ID": CS571.getBadgerId()
             }
