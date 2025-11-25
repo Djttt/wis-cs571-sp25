@@ -1,9 +1,10 @@
 import React from "react"
-import { Card } from "react-bootstrap";
+import { Card, Button } from "react-bootstrap";
 
 function BadgerMessage(props) {
 
     const dt = new Date(props.created);
+    const currentUsername = props.username;
 
     return <Card style={{margin: "0.5rem", padding: "0.5rem"}}>
         <h2>{props.title}</h2>
@@ -11,6 +12,9 @@ function BadgerMessage(props) {
         <br/>
         <i>{props.poster}</i>
         <p>{props.content}</p>
+        {
+            props.poster === currentUsername && <Button onClick={(e) => props.deletePost(e, props.id)}>Delete Post</Button>
+        }
     </Card>
 }
 

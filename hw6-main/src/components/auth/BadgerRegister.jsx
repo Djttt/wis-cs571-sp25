@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Form, Button } from "react-bootstrap"
+import { useNavigate } from 'react-router';
+import BadgerLoginStatusContext from '../contexts/BadgerLoginStatusContext';
 
 export default function BadgerRegister() {
 
@@ -8,6 +10,10 @@ export default function BadgerRegister() {
     const [pin, setPin] = useState("");
     const [repeatPin, setRepeatPin] = useState("");
     const [pinError, setPinError] = useState("");
+
+    const navigate = useNavigate();
+
+    const [loginStatus, setLoginStatus] = useContext(BadgerLoginStatusContext);
 
     const register = (e) => {
         e.preventDefault();  // prevent flush
@@ -49,6 +55,10 @@ export default function BadgerRegister() {
                 alert("username must be 64 characters or fewer");
             } else if (response.status === 200) {
                 alert("registration was successful");
+                navigate("/");
+                setLoginStatus(pre => pre=true);
+                sessionStorage.setItem("loginStatus", JSON.stringify(true));
+                sessionStorage.setItem("loginUsername", JSON.stringify(username));
             }
         });
     };
@@ -57,14 +67,18 @@ export default function BadgerRegister() {
         <h1>Register</h1>
         <Form onSubmit={register}>
             <Form.Group className='mb-3'>
-                <Form.Label>Username</Form.Label>
-                <Form.Control type="text" value={username} onChange={e => {setUsername(e.target.value)}}
+                <Form.Label htmlFor='username'>Username</Form.Label>
+                <Form.Control 
+                    id='username'
+                    type="text" value={username} onChange={e => {setUsername(e.target.value)}}
                 ></Form.Control>
             </Form.Group>
 
             <Form.Group className='mb-3'>
-                <Form.Label>Password</Form.Label>
-                <Form.Control type="password" value={pin} onChange={e => {setPin(e.target.value)}}
+                <Form.Label htmlFor='pin'>Password</Form.Label>
+                <Form.Control 
+                    id='pin'
+                    type="password" value={pin} onChange={e => {setPin(e.target.value)}}
                     isInvalid={pinError !== ""}
                 ></Form.Control>
 
@@ -74,8 +88,10 @@ export default function BadgerRegister() {
             </Form.Group>
 
             <Form.Group className='mb-3'>
-                <Form.Label>Repeat Password</Form.Label>
-                <Form.Control type="password" value={repeatPin} onChange={e => {setRepeatPin(e.target.value)}}
+                <Form.Label htmlFor='repeat-pin'>Repeat Password</Form.Label>
+                <Form.Control 
+                    id='repeat-pin'
+                    type="password" value={repeatPin} onChange={e => {setRepeatPin(e.target.value)}}
                     isInvalid={pinError !== ""}  
                 ></Form.Control>
             </Form.Group>
